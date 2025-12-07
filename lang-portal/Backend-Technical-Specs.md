@@ -1,4 +1,4 @@
-## Backend Server Technical Specs
+# Backend Server Technical Sepcs
 
 ## Business Goal:
 
@@ -12,9 +12,28 @@ A language learning school wants to build a prototype of learning portal which w
 - The backend will be built using Go
 - The database will be SQLite3
 - The API will be built using Gin
+-Mage is a task runner for Go.
 - The API will always return JSON
-- There will be no authentication or authorization
-- Everything will be treated as a single user
+- There will no authentication or authorization
+- Everything be treated as a single user
+
+## Directory Structure
+
+```text
+backend_go/
+├── cmd/
+│   └── server/
+├── internal/
+│   ├── models/     # Data structures and database operations
+│   ├── handlers/   # HTTP handlers organized by feature (dashboard, words, groups, etc.)
+│   └── service/    # Business logic
+├── db/
+│   ├── migrations/
+│   └── seeds/      # For initial data population
+├── magefile.go
+├── go.mod
+└── words.db
+```
 
 ## Database Schema
 
@@ -22,35 +41,35 @@ Our database will be a single sqlite database called `words.db` that will be in 
 
 We have the following tables:
 - words - stored vocabulary words
-    - id integer
-    - japanese string
-    - romaji string
-    - english string
-    - parts json
-- words_groups - join table for words and groups many-to-many relationship
-    - id integer
-    - word_id integer
-    - group_id integer
+  - id integer
+  - japasese string
+  - romaji string
+  - english string
+  - parts json
+- words_groups - join table for words and groups many-to-many
+  - id integer
+  - word_id integer
+  - group_id integer
 - groups - thematic groups of words
-    - id integer
-    - name string
+  - id integer
+  - name string
 - study_sessions - records of study sessions grouping word_review_items
-    - id integer
-    - group_id integer
-    - created_at timestamp
-    - study_activity_id integer
+  - id integer
+  - group_id integer
+  - created_at datetime
+  - study_activity_id integer
 - study_activities - a specific study activity, linking a study session to group
-    - id integer
-    - study_session_id integer
-    - group_id integer
-    - created_at timestamp
+  - id integer
+  - study_session_id integer
+  - group_id integer
+  - created_at datetime
 - word_review_items - a record of word practice, determining if the word was correct or not
-    - word_id integer
-    - study_session_id integer
-    - is_correct boolean
-    - created_at timestamp
+  - word_id integer
+  - study_session_id integer
+  - correct boolean
+  - created_at datetime
 
-### API Endpoints
+## API Endpoints
 
 ### GET /api/dashboard/last_study_session
 Returns information about the most recent study session.
@@ -368,9 +387,8 @@ Returns quick overview statistics.
 }
 ```
 
-## Mage Tasks
+## Task Runner Tasks
 
-Mage is a task runner for Go.
 Lets list out possible tasks we need for our lang portal.
 
 ### Initialize Database
